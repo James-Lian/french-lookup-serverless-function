@@ -71,11 +71,11 @@ export default async function handler(req, res) {
                 })
             }
 
-            res.status(200).json(collinsData)
+            res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage })
         } catch {
             res.status(500).json({ error: "Internal Server Error." })
         }
     } else {
-        res.status(200).json("Exceeded Collins API usage count for the month. ")
+        res.status(200).json({ message: "Exceeded Collins API usage count for the month. ", apiCallCount: apiUsage })
     }
 }
