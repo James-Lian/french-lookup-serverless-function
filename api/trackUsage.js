@@ -3,8 +3,12 @@ import { Redis } from '@upstash/redis'
 const redis = new Redis({
   url: process.env.UPSTASH_URL,
   token: process.env.UPSTASH_TOKEN,
-})
+});
 
+const hostname = "https://api.collinsdictionary.com";
+const accessKey = process.env.COLLINS_TOKEN;
+
+const numSearchResults = 5;
 
 export default async function handler(req, res) {
     const keyCount = "api_usage_count";
@@ -13,13 +17,65 @@ export default async function handler(req, res) {
 
     const lastMonth = await redis.get(keyMonth);
 
+    const { dictType, reqType, reqWord } = req.body();
+    
+    let collinsData;
+    let apiUsage;
+
     // if the month has changed, thus requiring a counter reset
-    if (!lastMonth || paresInt(LastMonth) !== currentMonth) {
+    if (!lastMonth || paresInt(lastMonth) !== currentMonth) {
         await redis.set(keyCount, 1);
         await redis.set(keyMonth, currentMonth);
-        res.status(200).json()
+
     } else {
-        const newCount = await redis.incr(keyCount);
-        res.status(200).json({ usage_count: newCount })
+        apiUsage = await redis.incr(keyCount);
+    }
+    
+    if (apiUsage <= 4800) {
+        try {
+            if (reqType == "best-matching") {
+                let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/first/?q=${reqWord}`;
+                collinsData = await fetch(URL, {
+                    method: 'GET',
+                    headers: {
+                        'accessKey': accessKey,
+                        'Accept': 'application/json'
+                    }
+                });
+            } else if (reqType == "get-entry") {
+                let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${reqWord}`;
+                collinsData = await fetch(URL, {
+                    method: 'GET',
+                    headers: {
+                        'accessKey': accessKey,
+                        'Accept': 'application/json'
+                    }
+                })
+            } else if (reqType == "did-you-mean") {
+                let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/didyoumean/?q=${reqWord}&entrynumber=${numSearchResults}`;
+                collinsData = await fetch(URL, {
+                    method: 'GET',
+                    headers: {
+                        'accessKey': accessKey,
+                        'Accept': 'application/json'
+                    }
+                })
+            } else if (reqType == "make-a-search") {
+                let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/?q=${reqWord}&pagesize=${numSearchResults}`;
+                collinsData = await fetch(URL, {
+                    method: 'GET',
+                    headers: {
+                        'accessKey': accessKey,
+                        'Accept': 'application/json'
+                    }
+                })
+            }
+
+            res.status(200).json(collinsData)
+        } catch {
+            res.status(500).json({ error: "Internal Server Error." })
+        }
+    } else {
+        res.status(200).json("Exceeded Collins API usage count for the month. ")
     }
 }
