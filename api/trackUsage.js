@@ -1,4 +1,4 @@
-const { Redis } = require('@upstash/redis');
+// const { Redis } = require('@upstash/redis');
 
 const hostname = "https://api.collinsdictionary.com";
 const accessKey = process.env.COLLINS_TOKEN;
