@@ -1,6 +1,6 @@
-const { Redis } = require('@upstash/redis'); // leaving this line in causes a CORS error
+// const { Redis } = require('@upstash/redis'); // leaving this line in causes a CORS error
 
-const redis = Redis.fromEnv()
+const redis = 0
 
 const hostname = "https://api.collinsdictionary.com";
 const accessKey = process.env.COLLINS_TOKEN;
