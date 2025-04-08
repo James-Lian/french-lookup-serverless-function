@@ -1,4 +1,4 @@
-import redis from "./redis";
+// import redis from "./redis";
 
 const hostname = "https://api.collinsdictionary.com";
 const accessKey = process.env.COLLINS_TOKEN;
