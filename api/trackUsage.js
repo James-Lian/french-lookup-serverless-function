@@ -1,4 +1,4 @@
-const { Redis } = require('@upstash/redis'); // leaving this line in causes a CORS error
+// const { Redis } = require('@upstash/redis'); // leaving this line in causes a CORS error
 
 module.exports = async (req, res) => {
 
