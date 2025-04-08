@@ -32,13 +32,14 @@ export default async function handler(req, res) {
 
     const lastMonth = await redis.get(keyMonth);
 
-    const { dictType, reqType, reqWord } = req.body();
+    const { dictType, reqType, reqWord } = req.body;
     
+    let collinsResponse;
     let collinsData;
     let apiUsage;
 
     // if the month has changed, thus requiring a counter reset
-    if (!lastMonth || paresInt(lastMonth) !== currentMonth) {
+    if (!lastMonth || parseInt(lastMonth) !== currentMonth) {
         await redis.set(keyCount, 1);
         await redis.set(keyMonth, currentMonth);
 
@@ -50,7 +51,7 @@ export default async function handler(req, res) {
         try {
             if (reqType == "best-matching") {
                 let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/first/?q=${reqWord}`;
-                collinsData = await fetch(URL, {
+                collinsResponse = await fetch(URL, {
                     method: 'GET',
                     headers: {
                         'accessKey': accessKey,
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
                 });
             } else if (reqType == "get-entry") {
                 let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${reqWord}`;
-                collinsData = await fetch(URL, {
+                collinsResponse = await fetch(URL, {
                     method: 'GET',
                     headers: {
                         'accessKey': accessKey,
@@ -68,7 +69,7 @@ export default async function handler(req, res) {
                 })
             } else if (reqType == "did-you-mean") {
                 let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/didyoumean/?q=${reqWord}&entrynumber=${numSearchResults}`;
-                collinsData = await fetch(URL, {
+                collinsResponse = await fetch(URL, {
                     method: 'GET',
                     headers: {
                         'accessKey': accessKey,
@@ -77,7 +78,7 @@ export default async function handler(req, res) {
                 })
             } else if (reqType == "make-a-search") {
                 let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/?q=${reqWord}&pagesize=${numSearchResults}`;
-                collinsData = await fetch(URL, {
+                collinsResponse = await fetch(URL, {
                     method: 'GET',
                     headers: {
                         'accessKey': accessKey,
@@ -85,7 +86,7 @@ export default async function handler(req, res) {
                     }
                 })
             }
-
+            collinsData = await collinsResponse.json()
             res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage })
         } catch {
             res.status(500).json({ error: "Internal Server Error." })
