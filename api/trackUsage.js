@@ -1,4 +1,4 @@
-// const { Redis } = require('@upstash/redis');
+import { Redis } from '@upstash/redis'
 
 // const redis = new Redis({
 //   url: process.env.UPSTASH_URL,
