@@ -30,22 +30,24 @@ module.exports = async (req, res) => {
 
     const lastMonth = await redis.get(keyMonth);
 
+    console.log(req.body);
     const { dictType, reqType, reqWord } = req.body;
     
     let collinsResponse;
     let collinsData;
     let apiUsage;
 
-    // if the month has changed, thus requiring a counter reset
-    if (!lastMonth || parseInt(lastMonth) !== currentMonth) {
-        await redis.set(keyCount, 1);
-        await redis.set(keyMonth, currentMonth);
-
-    } else {
-        apiUsage = await redis.incr(keyCount);
-    }
-
+    
     try {
+        // if the month has changed, thus requiring a counter reset
+        if (!lastMonth || parseInt(lastMonth) !== currentMonth) {
+            await redis.set(keyCount, 1);
+            await redis.set(keyMonth, currentMonth);
+    
+        } else {
+            apiUsage = await redis.incr(keyCount);
+        }
+
         if (apiUsage <= 4800) {
             try {
                 if (reqType == "best-matching") {
