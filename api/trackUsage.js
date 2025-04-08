@@ -93,4 +93,6 @@ module.exports = async (req, res) => {
     } else {
         res.status(200).json({ message: "Exceeded Collins API usage count for the month. ", apiCallCount: apiUsage })
     }
+
+    res.status(200).json({ message: "f" })
 }
