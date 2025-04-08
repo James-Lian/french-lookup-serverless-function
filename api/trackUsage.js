@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         return;
     }
 
-    res.status(200).end()
+    res.status(200).json({message: "WHY"})
 }
 //     const keyCount = "api_usage_count";
 //     const keyMonth = "last_accessed_month";
