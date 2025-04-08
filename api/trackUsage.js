@@ -1,4 +1,4 @@
-const { Redis } = require('@upstash/redis');
+import redis from "./redis";
 
 const hostname = "https://api.collinsdictionary.com";
 const accessKey = process.env.COLLINS_TOKEN;
@@ -22,7 +22,6 @@ module.exports = async (req, res) => {
         return;
     }
     
-    const redis = Redis.fromEnv()
     const keyCount = "api_usage_count";
     const keyMonth = "last_accessed_month";
     const currentMonth = new Date().getUTCMonth();
