@@ -28,8 +28,8 @@ module.exports = async (req, res) => {
 //     res.status(200).json({message: "f"})
 // }
 
-    let redis = 1
-    const lastMonth = await redis.get(keyMonth);
+    let read = 1
+    const lastMonth = await read.get(keyMonth);
 
     const { dictType, reqType, reqWord } = req.body;
     
@@ -39,11 +39,11 @@ module.exports = async (req, res) => {
 
     // if the month has changed, thus requiring a counter reset
     if (!lastMonth || parseInt(lastMonth) !== currentMonth) {
-        await redis.set(keyCount, 1);
-        await redis.set(keyMonth, currentMonth);
+        await read.set(keyCount, 1);
+        await read.set(keyMonth, currentMonth);
 
     } else {
-        apiUsage = await redis.incr(keyCount);
+        apiUsage = await read.incr(keyCount);
     }
     
     // if (apiUsage <= 4800) {
