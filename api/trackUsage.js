@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
 
     console.log(apiUsage);
     
-    if (apiUsage <= 8) {
+    if (apiUsage <= 4888) {
         try {
             if (reqType == "best-matching") {
                 collinsData = await getBestMatching(dictType, reqWord);
@@ -96,13 +96,37 @@ async function getBestMatching(dictType, reqWord) {
 }
 
 async function getEntry(dictType, entryID) {
-
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${entryID}`;
+    collinsResponse = await fetch(URL, {
+        method: 'GET',
+        headers: {
+            'accessKey': accessKey,
+            'Accept': 'application/json'
+        }
+    });
+    return await collinsResponse.json()
 }
 
 async function didYouMean(dictType, reqWord, limit) {
-
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/didyoumean/?q=${reqWord}&entrynumber=${limit}`;
+    collinsResponse = await fetch(URL, {
+        method: 'GET',
+        headers: {
+            'accessKey': accessKey,
+            'Accept': 'application/json'
+        }
+    });
+    return await collinsResponse.json()
 }
 
 async function makeASearch(dictType, reqWord, limit) {
-
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/?q=${reqWord}&pagesize=${numSearchResults}`;
+    collinsResponse = await fetch(URL, {
+        method: 'GET',
+        headers: {
+            'accessKey': accessKey,
+            'Accept': 'application/json'
+        }
+    });
+    return await collinsResponse.json()
 }
