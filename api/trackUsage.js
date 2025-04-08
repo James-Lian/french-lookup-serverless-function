@@ -11,6 +11,11 @@ const accessKey = process.env.COLLINS_TOKEN;
 const numSearchResults = 5;
 
 export default async function handler(req, res) {
+    // Add CORS headers to allow requests from the client-side
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Replace '*' with your client-side domain for added security (e.g., https://your-domain.com)
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
     const keyCount = "api_usage_count";
     const keyMonth = "last_accessed_month";
     const currentMonth = new Date().getUTCMonth();
