@@ -39,7 +39,6 @@ module.exports = async (req, res) => {
 
     const { dictType, reqType, reqWord } = req.body;
     
-    let collinsResponse;
     let collinsData;
     let apiUsage = 1;
 
@@ -54,53 +53,56 @@ module.exports = async (req, res) => {
 
     console.log(apiUsage);
     
-    if (apiUsage <= 4800) {
+    if (apiUsage <= 8) {
         try {
             if (reqType == "best-matching") {
-                let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/first/?q=${reqWord}`;
-                collinsResponse = await fetch(URL, {
-                    method: 'GET',
-                    headers: {
-                        'accessKey': accessKey,
-                        'Accept': 'application/json'
+                collinsData = await getBestMatching(dictType, reqWord);
+                if ('errorCode' in collinsData) {
+                    if (collinsData["errorCode"] == "NoResults") {
+                        collinsData = await didYouMean(dictType, reqWord, numSearchResults);
+                    } else {
+                        res.status(502).json({ error: "502 Bad Gateway" });
+                        return;
                     }
-                });
+                } else {
+                    collinsData = await getEntry(dictType, collinsData.entryId);
+                }
             } else if (reqType == "get-entry") {
-                let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${reqWord}`;
-                collinsResponse = await fetch(URL, {
-                    method: 'GET',
-                    headers: {
-                        'accessKey': accessKey,
-                        'Accept': 'application/json'
-                    }
-                })
+                collinsData = await getEntry(dictType, reqWord);
             } else if (reqType == "did-you-mean") {
-                let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/didyoumean/?q=${reqWord}&entrynumber=${numSearchResults}`;
-                collinsResponse = await fetch(URL, {
-                    method: 'GET',
-                    headers: {
-                        'accessKey': accessKey,
-                        'Accept': 'application/json'
-                    }
-                })
+                collinsData = await didYouMean(dictType, reqWord, numSearchResults);
             } else if (reqType == "make-a-search") {
-                let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/?q=${reqWord}&pagesize=${numSearchResults}`;
-                collinsResponse = await fetch(URL, {
-                    method: 'GET',
-                    headers: {
-                        'accessKey': accessKey,
-                        'Accept': 'application/json'
-                    }
-                })
+                collinsData = await makeASearch(dictType, reqWord, numSearchResults);
             }
-            collinsData = await collinsResponse.json()
             res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage })
         } catch {
             res.status(500).json({ error: "Internal Server Error." })
         }
     } else {
-        res.status(200).json({ message: "Exceeded Collins API usage count for the month. ", apiCallCount: apiUsage })
+        res.status(429).json({ message: "Too Many Requests - Exceeded Collins API usage count for the month. ", apiCallCount: apiUsage })
     }
+}
 
-    res.status(200).json({ message: "f" })
+async function getBestMatching(dictType, reqWord) {
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/first/?q=${reqWord}`;
+    collinsResponse = await fetch(URL, {
+        method: 'GET',
+        headers: {
+            'accessKey': accessKey,
+            'Accept': 'application/json'
+        }
+    });
+    return await collinsResponse.json()
+}
+
+async function getEntry(dictType, entryID) {
+
+}
+
+async function didYouMean(dictType, reqWord, limit) {
+
+}
+
+async function makeASearch(dictType, reqWord, limit) {
+
 }
