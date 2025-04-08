@@ -1,4 +1,4 @@
-// import { Redis } from '@upstash/redis'
+import { Redis } from '@upstash/redis'
 
 // const redis = new Redis({
 //   url: process.env.UPSTASH_URL,
@@ -6,7 +6,7 @@
 // });
 
 const hostname = "https://api.collinsdictionary.com";
-const accessKey = process.env.COLLINS_TOKEN;
+// const accessKey = process.env.COLLINS_TOKEN;
 
 const numSearchResults = 5;
 
