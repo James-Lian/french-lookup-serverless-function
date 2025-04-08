@@ -8,6 +8,7 @@ const accessKey = process.env.COLLINS_TOKEN;
 const numSearchResults = 5;
 
 module.exports = async (req, res) => {
+    console.log('broski')
     console.log(req.body)
 
     // Add CORS headers to allow requests from the client-side
