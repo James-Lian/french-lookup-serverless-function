@@ -41,6 +41,7 @@ module.exports = async (req, res) => {
     
     let collinsData;
     let apiUsage = 1;
+    let collinsMethod;
 
     // if the month has changed, thus requiring a counter reset
     if (!lastMonth || parseInt(lastMonth) !== currentMonth) {
@@ -56,25 +57,25 @@ module.exports = async (req, res) => {
     if (apiUsage <= 4888) {
         try {
             if (reqType == "best-matching") {
-                collinsData = await getBestMatching(dictType, reqWord);
+                [collinsData, collinsMethod] = await getBestMatching(dictType, reqWord);
                 if ('errorCode' in collinsData) {
                     if (collinsData["errorCode"] == "NoResults") {
-                        collinsData = await didYouMean(dictType, reqWord, numSearchResults);
+                        [collinsData, collinsMethod] = await didYouMean(dictType, reqWord, numSearchResults);
                     } else {
                         res.status(502).json({ error: "502 Bad Gateway" });
                         return;
                     }
                 } else {
-                    collinsData = await getEntry(dictType, collinsData.entryId);
+                    [collinsData, collinsMethod] = await getEntry(dictType, collinsData.entryId);
                 }
             } else if (reqType == "get-entry") {
-                collinsData = await getEntry(dictType, reqWord);
+                [collinsData, collinsMethod] = await getEntry(dictType, reqWord);
             } else if (reqType == "did-you-mean") {
-                collinsData = await didYouMean(dictType, reqWord, numSearchResults);
+                [collinsData, collinsMethod] = await didYouMean(dictType, reqWord, numSearchResults);
             } else if (reqType == "make-a-search") {
-                collinsData = await makeASearch(dictType, reqWord, numSearchResults);
+                [collinsData, collinsMethod] = await makeASearch(dictType, reqWord, numSearchResults);
             }
-            res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage })
+            res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage, format: collinsMethod })
         } catch {
             res.status(500).json({ error: "Internal Server Error." })
         }
@@ -84,7 +85,7 @@ module.exports = async (req, res) => {
 }
 
 async function getBestMatching(dictType, reqWord) {
-    let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/first/?q=${reqWord}`;
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/search/first/?q=${reqWord}&format=xml`;
     collinsResponse = await fetch(URL, {
         method: 'GET',
         headers: {
@@ -92,11 +93,11 @@ async function getBestMatching(dictType, reqWord) {
             'Accept': 'application/json'
         }
     });
-    return await collinsResponse.json()
+    return [await collinsResponse.json(), "xml"]
 }
 
 async function getEntry(dictType, entryID) {
-    let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${entryID}`;
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${entryID}?format=xml`;
     collinsResponse = await fetch(URL, {
         method: 'GET',
         headers: {
@@ -104,7 +105,7 @@ async function getEntry(dictType, entryID) {
             'Accept': 'application/json'
         }
     });
-    return await collinsResponse.json()
+    return [await collinsResponse.json(), "xml"]
 }
 
 async function didYouMean(dictType, reqWord, limit) {
@@ -116,7 +117,7 @@ async function didYouMean(dictType, reqWord, limit) {
             'Accept': 'application/json'
         }
     });
-    return await collinsResponse.json()
+    return [await collinsResponse.json(), "json"]
 }
 
 async function makeASearch(dictType, reqWord, limit) {
@@ -128,5 +129,5 @@ async function makeASearch(dictType, reqWord, limit) {
             'Accept': 'application/json'
         }
     });
-    return await collinsResponse.json()
+    return [await collinsResponse.json(), "json"]
 }
