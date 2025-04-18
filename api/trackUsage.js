@@ -99,8 +99,8 @@ async function getBestMatching(dictType, reqWord) {
     return [await collinsResponse.json(), "best-matching"]
 }
 
-async function getEntry(dictType, entryID) {
-    let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${entryID}?format=xml`;
+async function getEntry(dictType, entryId) {
+    let URL = `${hostname}/api/v1/dictionaries/${dictType}/entries/${entryId}?format=xml`;
     collinsResponse = await fetch(URL, {
         method: 'GET',
         headers: {
