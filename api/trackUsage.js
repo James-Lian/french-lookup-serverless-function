@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     //     res.setHeader('Access-Control-Allow-Origin', origin); // Dynamically allow specific origins
     // }
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     
@@ -70,6 +70,7 @@ module.exports = async (req, res) => {
                     collinsWord = collinsData.entryLabel;
                     [collinsData, collinsMethod] = await getEntry(dictType, collinsData.entryId);
                 }
+                apiUsage = await redis.incr(keyCount);
             } else if (reqType == "get-entry") {
                 collinsWord = reqWord;
                 [collinsData, collinsMethod] = await getEntry(dictType, reqWord);
