@@ -42,6 +42,7 @@ module.exports = async (req, res) => {
     let collinsData;
     let apiUsage = 1;
     let collinsMethod;
+    let collinsWord;
 
     // if the month has changed, thus requiring a counter reset
     if (!lastMonth || parseInt(lastMonth) !== currentMonth) {
@@ -66,16 +67,18 @@ module.exports = async (req, res) => {
                         return;
                     }
                 } else {
+                    collinsWord = collinsData.entryLabel;
                     [collinsData, collinsMethod] = await getEntry(dictType, collinsData.entryId);
                 }
             } else if (reqType == "get-entry") {
+                collinsWord = reqWord;
                 [collinsData, collinsMethod] = await getEntry(dictType, reqWord);
             } else if (reqType == "did-you-mean") {
                 [collinsData, collinsMethod] = await didYouMean(dictType, reqWord, numSearchResults);
             } else if (reqType == "make-a-search") {
                 [collinsData, collinsMethod] = await makeASearch(dictType, reqWord, numSearchResults);
             }
-            res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage, format: collinsMethod })
+            res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage, format: collinsMethod, word: collinsWord })
         } catch {
             res.status(500).json({ error: "Internal Server Error." })
         }
@@ -93,7 +96,7 @@ async function getBestMatching(dictType, reqWord) {
             'Accept': 'application/json'
         }
     });
-    return [await collinsResponse.json(), "xml"]
+    return [await collinsResponse.json(), "best-matching"]
 }
 
 async function getEntry(dictType, entryID) {
@@ -105,7 +108,7 @@ async function getEntry(dictType, entryID) {
             'Accept': 'application/json'
         }
     });
-    return [await collinsResponse.json(), "xml"]
+    return [await collinsResponse.json(), "get-entry"]
 }
 
 async function didYouMean(dictType, reqWord, limit) {
@@ -117,7 +120,7 @@ async function didYouMean(dictType, reqWord, limit) {
             'Accept': 'application/json'
         }
     });
-    return [await collinsResponse.json(), "json"]
+    return [await collinsResponse.json(), "did-you-mean"]
 }
 
 async function makeASearch(dictType, reqWord, limit) {
@@ -129,5 +132,5 @@ async function makeASearch(dictType, reqWord, limit) {
             'Accept': 'application/json'
         }
     });
-    return [await collinsResponse.json(), "json"]
+    return [await collinsResponse.json(), "make-a-search"]
 }
