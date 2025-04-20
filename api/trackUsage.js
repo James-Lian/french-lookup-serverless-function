@@ -72,8 +72,8 @@ module.exports = async (req, res) => {
                 }
                 apiUsage = await redis.incr(keyCount);
             } else if (reqType == "get-entry") {
-                collinsWord = reqWord;
                 [collinsData, collinsMethod] = await getEntry(dictType, reqWord);
+                collinsWord = collinsData.entryLabel;
             } else if (reqType == "did-you-mean") {
                 [collinsData, collinsMethod] = await didYouMean(dictType, reqWord, numSearchResults);
             } else if (reqType == "make-a-search") {
