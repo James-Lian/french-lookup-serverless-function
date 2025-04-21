@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
         }
         
         res.status(200).json({ message: "French conjugation succeeded", data: conjugations})
-    } catch {
+    } catch (error) {
         res.status(500).json({ error: error })
     }
 }
