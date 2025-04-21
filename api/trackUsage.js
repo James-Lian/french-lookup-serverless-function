@@ -8,7 +8,6 @@ const accessKey = process.env.COLLINS_TOKEN;
 const numSearchResults = 5;
 
 module.exports = async (req, res) => {
-    console.log('broski')
     console.log(req.body)
 
     // Add CORS headers to allow requests from the client-side
@@ -32,10 +31,8 @@ module.exports = async (req, res) => {
     const keyMonth = "last_accessed_month";
     const today = new Date();
     const currentMonth = today.getUTCMonth();
-    console.log(currentMonth);
 
     const lastMonth = await redis.get(keyMonth);
-    console.log(lastMonth)
 
     const { dictType, reqType, reqWord } = req.body;
     
@@ -52,8 +49,6 @@ module.exports = async (req, res) => {
     } else {
         apiUsage = await redis.incr(keyCount);
     }
-
-    console.log(apiUsage);
     
     if (apiUsage <= 4888) {
         try {
