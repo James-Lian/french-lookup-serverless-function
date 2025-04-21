@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
     const { word } = req.body;
     
     try {
-        
+        console.log("heybro", 1)
         const conjugations = {
             "indicatif": {
                 "présent": conjugationFr.conjugate(word, "indicative", "present"),
@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
                 "participe passé": conjugationFr.conjugate(word, "participle", "past-participle"),
             }
         }
-        
+        console.log("hey bro", 2)
         res.status(200).json({ message: "French conjugation succeeded", data: conjugations})
     } catch (error) {
         res.status(500).json({ error: error })
