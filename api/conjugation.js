@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
             "indicatif": {
                 "présent": conjugationFr.conjugate(word, "indicative", "present"),
                 "imparfait": conjugationFr.conjugate(word, "indicative", "imperfect"),
-                "futur": conjugationFr.conjugate(word, "indicative", "futur"),
+                "futur": conjugationFr.conjugate(word, "indicative", "future"),
                 "passé simple": conjugationFr.conjugate(word, "indicative", "simple-past"),
                 "passé composé": conjugationFr.conjugate(word, "indicative", "perfect-tense"),
                 "plus-que-parfait": conjugationFr.conjugate(word, "indicative", "pluperfect"),
