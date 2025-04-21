@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const { word } = req.body();
+    const { word } = req.body;
     
     try {
         
