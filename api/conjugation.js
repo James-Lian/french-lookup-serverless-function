@@ -1,4 +1,4 @@
-import conjugationFr from 'https://cdn.jsdelivr.net/npm/conjugation-fr@0.3.4/+esm'
+import conjugationFr from 'conjugation-fr';
 
 module.exports = async (req, res) => {
     // Add CORS headers to allow requests from the client-side
