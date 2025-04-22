@@ -25,34 +25,34 @@ module.exports = async (req, res) => {
 
     try {
         const conjugations = {
-            "indicatif": {
-                "présent": conjugationFr.conjugate(word, "indicative", "present"),
-                "imparfait": conjugationFr.conjugate(word, "indicative", "imperfect"),
-                "futur": conjugationFr.conjugate(word, "indicative", "future"),
-                "passé simple": conjugationFr.conjugate(word, "indicative", "simple-past"),
-                "passé composé": conjugationFr.conjugate(word, "indicative", "perfect-tense"),
-                "plus-que-parfait": conjugationFr.conjugate(word, "indicative", "pluperfect"),
-                "passé antérieur": conjugationFr.conjugate(word, "indicative", "anterior-past"),
-                "futur antérieur": conjugationFr.conjugate(word, "indicative", "anterior-future"),
-            },
-            "conditionnel": {
-                "présent": conjugationFr.conjugate(word, "conditional", "present"),
-                "passé conditionnel": conjugationFr.conjugate(word, "conditional", "conditional-past"),
-            },
-            "subjonctif": {
-                "présent": conjugationFr.conjugate(word, "subjunctive", "present"),
-                "imparfait": conjugationFr.conjugate(word, "subjunctive", "imperfect"),
-                "subjonctif passé": conjugationFr.conjugate(word, "subjunctive", "subjunctive-past"),
-                "subjontif plus-que-parfait": conjugationFr.conjugate(word, "subjunctive", "subjunctive-pluperfect"),
-            },
-            "impératif": {
-                "impératif présent": conjugationFr.conjugate(word, "imperative", "imperative-present"),
-                "impératif passé": conjugationFr.conjugate(word, "imperative", "imperative-past"),
-            },
-            "participe": {
-                "participe présent": conjugationFr.conjugate(word, "participle", "present-participle"),
-                "participe passé": conjugationFr.conjugate(word, "participle", "past-participle"),
-            }
+            "indicatif": [
+                {"présent": conjugationFr.conjugate(word, "indicative", "present")},
+                {"imparfait": conjugationFr.conjugate(word, "indicative", "imperfect")},
+                {"futur": conjugationFr.conjugate(word, "indicative", "future")},
+                {"passé simple": conjugationFr.conjugate(word, "indicative", "simple-past")},
+                {"passé composé": conjugationFr.conjugate(word, "indicative", "perfect-tense")},
+                {"plus-que-parfait": conjugationFr.conjugate(word, "indicative", "pluperfect")},
+                {"passé antérieur": conjugationFr.conjugate(word, "indicative", "anterior-past")},
+                {"futur antérieur": conjugationFr.conjugate(word, "indicative", "anterior-future")},
+            ],
+            "conditionnel": [
+                {"présent": conjugationFr.conjugate(word, "conditional", "present")},
+                {"passé conditionnel": conjugationFr.conjugate(word, "conditional", "conditional-past")},
+            ],
+            "subjonctif": [
+                {"présent": conjugationFr.conjugate(word, "subjunctive", "present")},
+                {"imparfait": conjugationFr.conjugate(word, "subjunctive", "imperfect")},
+                {"subjonctif passé": conjugationFr.conjugate(word, "subjunctive", "subjunctive-past")},
+                {"subjontif plus-que-parfait": conjugationFr.conjugate(word, "subjunctive", "subjunctive-pluperfect")},
+            ],
+            "impératif": [
+                {"impératif présent": conjugationFr.conjugate(word, "imperative", "imperative-present")},
+                {"impératif passé": conjugationFr.conjugate(word, "imperative", "imperative-past")},
+            ],
+            "participe": [
+                {"participe présent": conjugationFr.conjugate(word, "participle", "present-participle")},
+                {"participe passé": conjugationFr.conjugate(word, "participle", "past-participle")},
+            ]
         }
         res.status(200).json({ message: "French conjugation succeeded", data: conjugations})
     } catch (error) {
