@@ -26,32 +26,32 @@ module.exports = async (req, res) => {
     try {
         const conjugations = {
             "indicatif": [
-                {"présent": conjugationFr.conjugate(word, "indicative", "present")},
-                {"imparfait": conjugationFr.conjugate(word, "indicative", "imperfect")},
-                {"futur": conjugationFr.conjugate(word, "indicative", "future")},
-                {"passé simple": conjugationFr.conjugate(word, "indicative", "simple-past")},
-                {"passé composé": conjugationFr.conjugate(word, "indicative", "perfect-tense")},
-                {"plus-que-parfait": conjugationFr.conjugate(word, "indicative", "pluperfect")},
-                {"passé antérieur": conjugationFr.conjugate(word, "indicative", "anterior-past")},
-                {"futur antérieur": conjugationFr.conjugate(word, "indicative", "anterior-future")},
+                {"tense": "présent", "conjugations": conjugationFr.conjugate(word, "indicative", "present")},
+                {"tense": "imparfait", "conjugations": conjugationFr.conjugate(word, "indicative", "imperfect")},
+                {"tense": "futur", "conjugations": conjugationFr.conjugate(word, "indicative", "future")},
+                {"tense": "passé simple", "conjugations": conjugationFr.conjugate(word, "indicative", "simple-past")},
+                {"tense": "passé composé", "conjugations": conjugationFr.conjugate(word, "indicative", "perfect-tense")},
+                {"tense": "plus-que-parfait", "conjugations": conjugationFr.conjugate(word, "indicative", "pluperfect")},
+                {"tense": "passé antérieur", "conjugations": conjugationFr.conjugate(word, "indicative", "anterior-past")},
+                {"tense": "futur antérieur", "conjugations": conjugationFr.conjugate(word, "indicative", "anterior-future")},
             ],
             "conditionnel": [
-                {"présent": conjugationFr.conjugate(word, "conditional", "present")},
-                {"passé conditionnel": conjugationFr.conjugate(word, "conditional", "conditional-past")},
+                {"tense": "présent", "conjugations": conjugationFr.conjugate(word, "conditional", "present")},
+                {"tense": "passé conditionnel", "conjugations": conjugationFr.conjugate(word, "conditional", "conditional-past")},
             ],
             "subjonctif": [
-                {"présent": conjugationFr.conjugate(word, "subjunctive", "present")},
-                {"imparfait": conjugationFr.conjugate(word, "subjunctive", "imperfect")},
-                {"subjonctif passé": conjugationFr.conjugate(word, "subjunctive", "subjunctive-past")},
-                {"subjontif plus-que-parfait": conjugationFr.conjugate(word, "subjunctive", "subjunctive-pluperfect")},
+                {"tense": "présent", "conjugations": conjugationFr.conjugate(word, "subjunctive", "present")},
+                {"tense": "imparfait", "conjugations": conjugationFr.conjugate(word, "subjunctive", "imperfect")},
+                {"tense": "subjonctif passé", "conjugations": conjugationFr.conjugate(word, "subjunctive", "subjunctive-past")},
+                {"tense": "subjontif plus-que-parfait", "conjugations": conjugationFr.conjugate(word, "subjunctive", "subjunctive-pluperfect")},
             ],
             "impératif": [
-                {"impératif présent": conjugationFr.conjugate(word, "imperative", "imperative-present")},
-                {"impératif passé": conjugationFr.conjugate(word, "imperative", "imperative-past")},
+                {"tense": "impératif présent", "conjugations": conjugationFr.conjugate(word, "imperative", "imperative-present")},
+                {"tense": "impératif passé", "conjugations": conjugationFr.conjugate(word, "imperative", "imperative-past")},
             ],
             "participe": [
-                {"participe présent": conjugationFr.conjugate(word, "participle", "present-participle")},
-                {"participe passé": conjugationFr.conjugate(word, "participle", "past-participle")},
+                {"tense": "participe présent", "conjugations": conjugationFr.conjugate(word, "participle", "present-participle")},
+                {"tense": "participe passé", "conjugations": conjugationFr.conjugate(word, "participle", "past-participle")},
             ]
         }
         res.status(200).json({ message: "French conjugation succeeded", data: conjugations})
