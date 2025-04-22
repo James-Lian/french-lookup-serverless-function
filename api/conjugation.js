@@ -40,9 +40,9 @@ module.exports = async (req, res) => {
                 {"tense": "Passé Conditionnel", "conjugations": conjugationFr.conjugate(word, "conditional", "conditional-past")},
             ],
             "subjonctif": [
-                {"tense": "Présent", "Conjugations": conjugationFr.conjugate(word, "subjunctive", "present")},
-                {"tense": "Imparfait", "Conjugations": conjugationFr.conjugate(word, "subjunctive", "imperfect")},
-                {"tense": "Subjonctif Passé", "Conjugations": conjugationFr.conjugate(word, "subjunctive", "subjunctive-past")},
+                {"tense": "Présent", "conjugations": conjugationFr.conjugate(word, "subjunctive", "present")},
+                {"tense": "Imparfait", "conjugations": conjugationFr.conjugate(word, "subjunctive", "imperfect")},
+                {"tense": "Subjonctif Passé", "conjugations": conjugationFr.conjugate(word, "subjunctive", "subjunctive-past")},
                 {"tense": "Subjontif Plus-que-parfait", "conjugations": conjugationFr.conjugate(word, "subjunctive", "subjunctive-pluperfect")},
             ],
             "impératif": [
