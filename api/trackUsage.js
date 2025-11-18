@@ -75,7 +75,8 @@ module.exports = async (req, res) => {
                 [collinsData, collinsMethod] = await makeASearch(dictType, reqWord, numSearchResults);
             }
             res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage, format: collinsMethod, word: collinsWord })
-        } catch {
+        } catch (e) {
+            console.log(e);
             res.status(500).json({ error: "Internal Server Error." })
         }
     } else {
@@ -92,7 +93,6 @@ async function getBestMatching(dictType, reqWord) {
             'Accept': 'application/json'
         }
     });
-    console.log("Trying it out.");
     return [await collinsResponse.json(), "best-matching"]
 }
 
@@ -132,4 +132,5 @@ async function makeASearch(dictType, reqWord, limit) {
     return [await collinsResponse.json(), "make-a-search"]
 
 }
+
 
