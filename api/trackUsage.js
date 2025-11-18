@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
             }
             res.status(200).json({ message: "Collins API call succeeded", data: collinsData, apiCallCount: apiUsage, format: collinsMethod, word: collinsWord })
         } catch {
-            res.status(500).json({ error: "Internal Server Error." })
+            res.status(500).json({ error: "Internal Server Error - error with Collins API." })
         }
     } else {
         res.status(429).json({ message: "Too Many Requests - Exceeded Collins API usage count for the month. ", apiCallCount: apiUsage })
@@ -129,4 +129,5 @@ async function makeASearch(dictType, reqWord, limit) {
         }
     });
     return [await collinsResponse.json(), "make-a-search"]
+
 }
