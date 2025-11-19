@@ -90,7 +90,6 @@ async function getBestMatching(dictType, reqWord) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/json'
         }
     });
     return [await collinsResponse.json(), "best-matching"]
@@ -102,7 +101,6 @@ async function getEntry(dictType, entryId) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/json'
         }
     });
     return [await collinsResponse.json(), "get-entry"]
@@ -114,7 +112,6 @@ async function didYouMean(dictType, reqWord, limit) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/json'
         }
     });
     return [await collinsResponse.json(), "did-you-mean"]
@@ -126,11 +123,11 @@ async function makeASearch(dictType, reqWord, limit) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/json'
         }
     });
     return [await collinsResponse.json(), "make-a-search"]
 
 }
+
 
 
