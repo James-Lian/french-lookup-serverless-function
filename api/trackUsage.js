@@ -92,6 +92,7 @@ async function getBestMatching(dictType, reqWord) {
             'accessKey': accessKey,
         }
     });
+    console.log(collinsResponse, "what");
     return [await collinsResponse.json(), "best-matching"]
 }
 
@@ -128,6 +129,7 @@ async function makeASearch(dictType, reqWord, limit) {
     return [await collinsResponse.json(), "make-a-search"]
 
 }
+
 
 
 
