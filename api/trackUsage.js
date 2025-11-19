@@ -90,7 +90,7 @@ async function getBestMatching(dictType, reqWord) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/xml',
+            'Accept': 'application/json',
             'User-Agent': 'French-Lookup/1.0'
         }
     });
@@ -104,7 +104,7 @@ async function getEntry(dictType, entryId) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/xml',
+            'Accept': 'application/json',
             'User-Agent': 'YourAppName/1.0'
         }
     });
@@ -117,7 +117,7 @@ async function didYouMean(dictType, reqWord, limit) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/xml',
+            'Accept': 'application/json',
             'User-Agent': 'YourAppName/1.0'
         }
     });
@@ -130,9 +130,10 @@ async function makeASearch(dictType, reqWord, limit) {
         method: 'GET',
         headers: {
             'accessKey': accessKey,
-            'Accept': 'application/xml',
+            'Accept': 'application/json',
             'User-Agent': 'YourAppName/1.0'
         }
     });
     return [await collinsResponse.json(), "make-a-search"]
 }
+
